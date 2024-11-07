@@ -1,0 +1,38 @@
+
+┌──(vyshu㉿lab)-[~]
+└─$ sudo nmap -Pn --script vuln 192.168.111.140 -oN  blue-Nmap-scan-report-01.txt
+
+Nmap scan report for 192.168.111.140
+Host is up (0.050s latency).
+Not shown: 992 filtered tcp ports (no-response)
+PORT STATE SERVICE
+135/tcp open msrpc
+139/tcp open netbios-ssn
+445/tcp open microsoft-ds
+49152/tcp open unknown
+49153/tcp open unknown
+49154/tcp open unknown
+49155/tcp open unknown
+49156/tcp open unknown
+
+Host script results:
+|_smb-vuln-ms10-054: false
+|_smb-vuln-ms10-061: NT_STATUS_ACCESS_DENIED
+|_samba-vuln-cve-2012-1182: NT_STATUS_ACCESS_DENIED
+| smb-vuln-ms17-010:
+| VULNERABLE:
+| Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)
+| State: VULNERABLE
+| IDs: CVE:CVE-2017-0143
+| Risk factor: HIGH
+| A critical remote code execution vulnerability exists in Microsoft SMBv1
+| servers (ms17-010).
+|
+| Disclosure date: 2017-03-14
+| References:
+| https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143
+| https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
+|_ https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
+
+# Nmap done at Tue Jun 14 22:08:10 2022 -- 1 IP address (1 host up) scanned in 134.70 seconds
+
