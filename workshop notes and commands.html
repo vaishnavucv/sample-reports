@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconnaissance and Scanning Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            color: #212529;
+            margin: 20px;
+        }
+        h2 {
+            color: #007bff;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+        code {
+            color: #d63384;
+        }
+    </style>
+</head>
+<body>
+    <h2>Reconnaissance and Footprinting</h2>
+    <p><strong>Duration:</strong> 90 minutes</p>
+    <h3>Test Domains:</h3>
+    <ul>
+        <li>Zero - Personal Banking - Loans - Credit Cards<br>
+            <a href="http://zero.webappsecurity.com/" target="_blank">http://zero.webappsecurity.com/</a>
+        </li>
+        <li>Test site for Acunetix WVS<br>
+            <a href="http://testphp.vulnweb.com/" target="_blank">http://testphp.vulnweb.com/</a>
+        </li>
+        <li>Altoro Mutual<br>
+            <a href="http://demo.testfire.net/" target="_blank">http://demo.testfire.net/</a>
+        </li>
+    </ul>
+
+    <h3>Tools and Commands:</h3>
+    <h4>Nmap</h4>
+    <ul>
+        <li><strong>Port Scan:</strong><br>
+            Scans common ports on a specified target.
+            <pre><code>nmap -p 1-65535 &lt;target-ip&gt;</code></pre>
+            <p><code>-p 1-65535</code> specifies the range of ports to scan (you can adjust this range as needed).</p>
+        </li>
+        <li><strong>Service Scanning:</strong><br>
+            Detects services and their versions running on open ports.
+            <pre><code>nmap -sV &lt;target-ip&gt;</code></pre>
+            <p><code>-sV</code> enables service version detection.</p>
+        </li>
+        <li><strong>Script Scanning for Vulnerability Finding:</strong><br>
+            Uses Nmap Scripting Engine (NSE) scripts for vulnerability scanning.
+            <pre><code>nmap --script vuln &lt;target-ip&gt;</code></pre>
+            <p><code>--script vuln</code> uses the built-in vulnerability scripts to identify common vulnerabilities.</p>
+        </li>
+        <li><strong>Report Saving to TXT File:</strong><br>
+            Saves the scan output to a .txt file.
+            <pre><code>nmap -oN report.txt &lt;target-ip&gt;</code></pre>
+            <p><code>-oN report.txt</code> saves the output in normal format to <code>report.txt</code>.</p>
+        </li>
+    </ul>
+    <h4>Combined Nmap Command:</h4>
+    <p>To perform a port scan with service detection and vulnerability scanning and save the report:</p>
+    <pre><code>nmap -p 1-65535 -sV --script vuln -oN report.txt &lt;target-ip&gt;</code></pre>
+
+    <h4>Naabu</h4>
+    <pre><code>naabu -host &lt;target&gt; -p &lt;port-range&gt; -silent | nmap -sV -sC -iL - -oN output.txt</code></pre>
+    <ul>
+        <li><code>-host &lt;target&gt;</code>: Specify your target domain or IP.</li>
+        <li><code>-p &lt;port-range&gt;</code>: Define the port range (e.g., 1-65535).</li>
+        <li><code>-silent</code>: Runs naabu in silent mode, removing extra information.</li>
+        <li><code>| nmap -sV -sC -iL -</code>: Pipes the output from naabu to nmap for service (<code>-sV</code>) and default script scanning (<code>-sC</code>).</li>
+        <li><code>-oN output.txt</code>: Saves the final output to <code>output.txt</code> in standard text format.</li>
+    </ul>
+
+    <h4>RustScan</h4>
+    <ul>
+        <li><strong>Port Scan:</strong>
+            <pre><code>rustscan -a &lt;target_ip&gt; -p &lt;port_range&gt;</code></pre>
+        </li>
+        <li><strong>Service Scanning:</strong><br>
+            RustScan can pass open ports directly to Nmap for service scanning:
+            <pre><code>rustscan -a &lt;target_ip&gt; -- -sV</code></pre>
+        </li>
+        <li><strong>Script Scanning for Vulnerability Finding:</strong>
+            <pre><code>rustscan -a &lt;target_ip&gt; -- -sV --script vuln &gt; rustscan_report.txt</code></pre>
+        </li>
+    </ul>
+
+    <h2>Scanning and Enumeration [Hands-on Scenario]</h2>
+    <h3>Techniques for Web Application, Network, and System Scanning</h3>
+    <h4>arp-scan</h4>
+    <p>This command scans the local network to find active IP addresses and their associated MAC addresses.</p>
+    <pre><code>arp-scan -l</code></pre>
+
+    <h4>Nmap</h4>
+    <p>This command scans all 65535 ports on the specified domain and attempts to detect service versions.</p>
+    <pre><code>sudo nmap -p- -sV domain.com</code></pre>
+
+    <h4>Gobuster Directory Bruteforce</h4>
+    <p>Gobuster is used to brute-force directories on the target domain.</p>
+    <pre><code>gobuster dir -u http://domain -w list.txt</code></pre>
+
+    <h4>Wpscan</h4>
+    <p>A WordPress vulnerability scanner.</p>
+    <pre><code>wpscan --url http://target.com --enumerate u</code></pre>
+</body>
+</html>
