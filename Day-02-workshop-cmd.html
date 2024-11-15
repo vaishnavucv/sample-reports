@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Commands for Finding Network Sessions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #444;
+        }
+        code {
+            background-color: #e0e0e0;
+            padding: 4px;
+            border-radius: 3px;
+            color: #FF5EA4;
+        }
+        pre {
+            background-color: #e0e0e0;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Linux Commands to Find Incoming and Outgoing Listening Sessions</h1>
+    
+    <h2>netstat</h2>
+    <p>Displays active connections, listening ports, and network statistics.</p>
+    <p><strong>Example to find listening sessions:</strong></p>
+    <pre><code>netstat -tuln</code></pre>
+    <ul>
+        <li><code>-t</code>: TCP connections.</li>
+        <li><code>-u</code>: UDP connections.</li>
+        <li><code>-l</code>: Listening ports.</li>
+        <li><code>-n</code>: Show numerical addresses instead of resolving names.</li>
+    </ul>
+    
+    <h2>ss (socket statistics)</h2>
+    <p>A faster, modern alternative to netstat.</p>
+    <p><strong>Example to find listening sessions:</strong></p>
+    <pre><code>ss -tuln</code></pre>
+    <p>Similar options as netstat.</p>
+    
+    <h2>lsof (list open files)</h2>
+    <p>Lists open files and network sockets.</p>
+    <p><strong>Example to list network sessions:</strong></p>
+    <pre><code>lsof -i</code></pre>
+    <p>Add <code>-iTCP</code> or <code>-iUDP</code> to filter specific protocols.</p>
+    
+    <h2>sudo netstat -plant</h2>
+    <p>Provides detailed output, including PID and program name.</p>
+    <p><strong>Example:</strong></p>
+    <pre><code>sudo netstat -plant | grep LISTEN</code></pre>
+    
+    <h2>iptables or firewalld</h2>
+    <p>Check firewall rules for open ports.</p>
+    <p><strong>Example:</strong></p>
+    <pre><code>sudo iptables -L -n -v</code></pre>
+    
+    <h2>Using grep</h2>
+    <h3>Definition:</h3>
+    <p><code>grep</code> is used to search for specific patterns in text files or output.</p>
+    
+    <h3>Basic Syntax:</h3>
+    <pre><code>grep [options] 'pattern' [file]</code></pre>
+    
+    <h3>Examples:</h3>
+    <p><strong>Search for a specific word in a file:</strong></p>
+    <pre><code>grep "keyword" file.txt</code></pre>
+    
+    <p><strong>Case-insensitive search:</strong></p>
+    <pre><code>grep -i "keyword" file.txt</code></pre>
+    
+    <p><strong>Search recursively in directories:</strong></p>
+    <pre><code>grep -r "keyword" /path/to/directory</code></pre>
+    
+    <p><strong>Match whole words only:</strong></p>
+    <pre><code>grep -w "keyword" file.txt</code></pre>
+    
+    <p><strong>Show line numbers:</strong></p>
+    <pre><code>grep -n "keyword" file.txt</code></pre>
+    
+    <h3>Using grep with Other Commands:</h3>
+    <p><strong>Filter netstat output:</strong></p>
+    <pre><code>netstat -tuln | grep LISTEN</code></pre>
+    
+    <p><strong>Search processes with ps:</strong></p>
+    <pre><code>ps aux | grep process_name</code></pre>
+    
+    <h3>Regular Expressions with grep:</h3>
+    <p>Use <code>grep -E</code> for extended regular expressions.</p>
+    <p><strong>Example: Find lines starting with "Error":</strong></p>
+    <pre><code>grep "^Error" file.txt</code></pre>
+</body>
+</html>
